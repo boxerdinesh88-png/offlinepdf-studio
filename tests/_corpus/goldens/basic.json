@@ -1,0 +1,170 @@
+{
+  "file": "basic.pdf",
+  "presets_expect": {
+    "Body": 10.5,
+    "Caption": 8.0,
+    "Footer": 8.0,
+    "Heading 1": 24.0,
+    "Heading 2": 18.0
+  },
+  "probes": {
+    "body_justified": {
+      "at": [
+        90,
+        703.0
+      ],
+      "expect": {
+        "alignment": "justify",
+        "family": "Helvetica",
+        "fill_srgb": [
+          0,
+          0,
+          0
+        ],
+        "italic": false,
+        "size_pt": 10.5,
+        "weight": 400
+      },
+      "page": 0
+    },
+    "bullet": {
+      "at": [
+        90,
+        614.0
+      ],
+      "expect": {
+        "alignment": "left",
+        "size_pt": 10.5,
+        "weight": 400
+      },
+      "page": 0
+    },
+    "caption": {
+      "at": [
+        90,
+        183.0
+      ],
+      "expect": {
+        "alignment": "left",
+        "family": "Helvetica",
+        "fill_srgb": [
+          115,
+          115,
+          115
+        ],
+        "italic": true,
+        "size_pt": 8.0,
+        "weight": 400
+      },
+      "page": 0
+    },
+    "cmyk_line": {
+      "at": [
+        90,
+        645
+      ],
+      "expect": {
+        "alignment": "left",
+        "fill_raw": [
+          0.85,
+          0.1,
+          0.05,
+          0.0
+        ],
+        "fill_space": "DeviceCMYK",
+        "size_pt": 14.0,
+        "weight": 700
+      },
+      "page": 0
+    },
+    "footer": {
+      "at": [
+        297.6377952755906,
+        39.0
+      ],
+      "expect": {
+        "alignment": "center",
+        "fill_srgb": [
+          140,
+          140,
+          140
+        ],
+        "size_pt": 8.0,
+        "weight": 400
+      },
+      "page": 0
+    },
+    "h1": {
+      "at": [
+        90,
+        788.0
+      ],
+      "expect": {
+        "alignment": "left",
+        "family": "Helvetica",
+        "fill_srgb": [
+          28,
+          54,
+          140
+        ],
+        "font_type": "Type1",
+        "is_embedded": false,
+        "italic": false,
+        "size_pt": 24.0,
+        "weight": 700
+      },
+      "page": 0
+    },
+    "h2": {
+      "at": [
+        90,
+        748.0
+      ],
+      "expect": {
+        "alignment": "left",
+        "family": "Helvetica",
+        "fill_srgb": [
+          26,
+          26,
+          26
+        ],
+        "italic": false,
+        "size_pt": 18.0,
+        "weight": 700
+      },
+      "page": 0
+    },
+    "left_line": {
+      "at": [
+        90,
+        639.0
+      ],
+      "expect": {
+        "alignment": "left",
+        "fill_srgb": [
+          0,
+          0,
+          0
+        ],
+        "size_pt": 10.5,
+        "weight": 400
+      },
+      "page": 0
+    },
+    "rotated": {
+      "at": "rotated-heading",
+      "expect": {
+        "alignment": "left",
+        "fill_srgb": [
+          0,
+          89,
+          64
+        ],
+        "rotation_deg": 30.0,
+        "size_pt": 20.0,
+        "weight": 700
+      },
+      "page": 1
+    }
+  }
+}

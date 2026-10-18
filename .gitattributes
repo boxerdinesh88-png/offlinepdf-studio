@@ -1,0 +1,7 @@
+*.pdf binary
+*.onnx binary
+*.ttf binary
+*.otf binary
+*.png binary
+*.ico binary
+*.whl binary

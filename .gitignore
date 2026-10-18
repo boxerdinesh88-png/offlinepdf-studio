@@ -1,0 +1,17 @@
+# environments
+.venv/
+.venv.broken/
+.tmp_dl/
+# caches
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+# IDE
+.idea/
+# build output
+build/
+dist/
+installer_output/
+tests/output/

@@ -1,0 +1,43 @@
+{
+  "cases": {
+    "cid": {
+      "file": "cid.pdf",
+      "font": "LiberationSans (Type0/Identity-H)"
+    },
+    "devanagari": {
+      "file": "devanagari.pdf",
+      "font": "NotoSansDevanagari",
+      "scripts": "Deva+Latn"
+    },
+    "encrypted": {
+      "encrypted": true,
+      "file": "encrypted.pdf",
+      "user_password": "secret"
+    },
+    "missing_glyph": {
+      "file": "missing_glyph.pdf",
+      "font": "LiberationSans ASCII subset",
+      "missing_glyph": "\u00e9 (U+00E9)"
+    },
+    "outlined": {
+      "file": "outlined.pdf",
+      "kind": "outlined paths",
+      "text": "OUTLINED"
+    },
+    "rtl": {
+      "direction": "rtl",
+      "file": "rtl.pdf",
+      "font": "NotoSansHebrew"
+    },
+    "signed": {
+      "file": "signed.pdf",
+      "sig_flags": 3,
+      "signed": true
+    },
+    "type3": {
+      "file": "type3.pdf",
+      "font": "hand-made Type3",
+      "text": "ABA"
+    }
+  }
+}
