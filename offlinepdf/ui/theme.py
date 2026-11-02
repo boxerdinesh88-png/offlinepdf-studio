@@ -337,7 +337,13 @@ def _draw_glyph(points: tuple[tuple[float, float], ...], color: str, path: Path)
     painter.setPen(pen)
     painter.drawPolyline([QPointF(x * scale, y * scale) for x, y in points])
     painter.end()
-    image.save(str(path), b"PNG")
+    # No format argument: PySide6 6.11 rejects ``save(str, b"PNG")``; Qt infers PNG from the suffix.
+    try:
+        saved = image.save(str(path))
+    except (TypeError, ValueError) as exc:
+        raise OSError(f"could not save theme icon {path}: {exc}") from exc
+    if not saved:
+        raise OSError(f"could not save theme icon {path}")
 
 
 def _icons(t: Theme) -> dict[str, str]:

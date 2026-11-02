@@ -907,7 +907,7 @@ def _qimage_png(image: QImage) -> bytes:
     data = QByteArray()
     buf = QBuffer(data)
     buf.open(QIODevice.OpenModeFlag.WriteOnly)
-    image.save(buf, b"PNG")
+    image.save(buf, "PNG")  # PySide6 6.11 rejects a bytes format here
     buf.close()
     return bytes(data.data())
 

@@ -21,7 +21,10 @@ __all__ = [
     "data_dir",
     "ensure_app_dirs",
     "is_frozen",
+    "is_linux",
+    "is_macos",
     "is_portable",
+    "is_windows",
     "resource_path",
     "temp_dir",
 ]
@@ -50,6 +53,18 @@ _DEFAULT_SETTINGS: dict[str, Any] = {
 def is_frozen() -> bool:
     """True when running from a PyInstaller bundle."""
     return bool(getattr(sys, "frozen", False))
+
+
+def is_windows() -> bool:
+    return sys.platform == "win32"
+
+
+def is_macos() -> bool:
+    return sys.platform == "darwin"
+
+
+def is_linux() -> bool:
+    return sys.platform.startswith("linux")
 
 
 def app_install_dir() -> Path:

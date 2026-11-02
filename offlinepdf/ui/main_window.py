@@ -90,6 +90,9 @@ class MainWindow(QMainWindow):
         self.setAcceptDrops(True)
 
         self._build_ui()
+        app = QApplication.instance()
+        if app is not None:
+            app.installEventFilter(self)
         self._build_actions()
         self._build_menus()
         self._build_toolbar()
@@ -270,7 +273,7 @@ class MainWindow(QMainWindow):
         self.act_redo.triggered.connect(self._redo)
         self.act_redo.setEnabled(False)
 
-        self.act_quit = QAction("Exit", self)
+        self.act_quit = QAction("Quit", self)
         self.act_quit.setShortcut(QKeySequence.StandardKey.Quit)
         self.act_quit.triggered.connect(self.close)
 
@@ -539,6 +542,22 @@ class MainWindow(QMainWindow):
         self._on_mode_changed()
 
     # --- document lifecycle ----------------------------------------------
+
+    def eventFilter(self, watched: object, event: object) -> bool:
+        # macOS (and some Linux desktops) deliver "open file" requests as
+        # application-level QFileOpenEvent events rather than argv. Handle
+        # them so double-clicking a PDF opens it in the running app.
+        try:
+            from PySide6.QtCore import QEvent
+
+            if isinstance(event, QEvent) and event.type() == QEvent.Type.FileOpen:
+                path = getattr(event, "file", lambda: "")()
+                if path:
+                    self.open_path(Path(path))
+                return True
+        except Exception:
+            logger.exception("failed to handle file-open event")
+        return super().eventFilter(watched, event)
 
     def open_dialog(self) -> None:
         start = self.settings.get_str("last_dir", "")
@@ -1294,6 +1313,7 @@ class MainWindow(QMainWindow):
             f"<b>{APP_NAME} {__version__}</b><br>"
             f"{version_banner()}<br><br>"
             "A fully offline PDF editor. Documents never leave this machine.<br>"
+            "Developed by Dinesh Kumar.<br>"
             "Third-party licenses: see THIRD_PARTY_LICENSES.md.",
         )
 

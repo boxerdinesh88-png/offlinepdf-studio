@@ -129,7 +129,11 @@ def install() -> bool:
         _CONTAINERS[id(socket)] = socket
         _CONTAINERS[id(urllib.request)] = urllib.request
         _CONTAINERS[id(http.client.HTTPConnection)] = http.client.HTTPConnection
-        _CONTAINERS[id(http.client.HTTPSConnection)] = http.client.HTTPSConnection
+        # HTTPSConnection only exists when the ssl module is importable; the
+        # frozen build may ship without it, in which case HTTPS is impossible.
+        https_cls = getattr(http.client, "HTTPSConnection", None)
+        if https_cls is not None:
+            _CONTAINERS[id(https_cls)] = https_cls
 
         _apply(socket.socket, "connect", _blocked_connect)
         _apply(socket.socket, "connect_ex", _blocked_connect_ex)
@@ -140,7 +144,8 @@ def install() -> bool:
         _apply(socket, "gethostbyname_ex", _blocked_gethostbyname_ex)
         _apply(urllib.request, "urlopen", _blocked_urlopen)
         _apply(http.client.HTTPConnection, "connect", _blocked_http_connect)
-        _apply(http.client.HTTPSConnection, "connect", _blocked_http_connect)
+        if https_cls is not None:
+            _apply(https_cls, "connect", _blocked_http_connect)
         _installed = True
         logger.info("network guard installed (all outbound access blocked)")
         return True
