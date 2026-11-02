@@ -4,4 +4,5 @@
 *.otf binary
 *.png binary
 *.ico binary
+assets/ocr/** binary
 *.whl binary
