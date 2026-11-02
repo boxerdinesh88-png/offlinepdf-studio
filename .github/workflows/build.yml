@@ -33,7 +33,7 @@ jobs:
         run: .venv\Scripts\python -m pytest -q
         continue-on-error: true
       - name: Build installer
-        run: build_installer.bat /nopause
+        run: cmd /c build_installer.bat /nopause
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
