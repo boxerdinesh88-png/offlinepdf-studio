@@ -1,74 +1,71 @@
 name: Build OfflinePDF Studio
 
-on:
+'on':
   push:
     branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
-  release:
-    types: [created]
 
 jobs:
-  build:
-    name: Build on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    env:
-      PYTHON: ${{ runner.os == 'Windows' && '.venv/Scripts/python' || '.venv/bin/python' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, macos-latest]
-
+  build-windows:
+    name: Build Windows installer
+    runs-on: windows-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
-
-      - name: Create virtual environment
-        shell: bash
+      - name: Create venv
         run: python -m venv .venv
-
       - name: Install dependencies
-        shell: bash
         run: |
-          $PYTHON -m pip install --upgrade pip
-          $PYTHON -m pip install -r requirements.lock
-          $PYTHON -m pip install "PyInstaller==6.22.3"
-
-      - name: Install Inno Setup (Windows)
-        if: runner.os == 'Windows'
+          .venv\Scripts\python -m pip install --upgrade pip
+          .venv\Scripts\python -m pip install -r requirements.lock
+          .venv\Scripts\python -m pip install "PyInstaller==6.22.3"
+      - name: Install Inno Setup
         run: choco install innosetup -y
-
       - name: Regenerate icons
-        shell: bash
-        run: $PYTHON scripts/make_icon.py
-
+        run: .venv\Scripts\python scripts\make_icon.py
       - name: Offline check
-        shell: bash
-        run: $PYTHON scripts/check_offline.py
-
+        run: .venv\Scripts\python scripts\check_offline.py
       - name: Run tests
-        shell: bash
-        run: $PYTHON -m pytest -q
-
-      - name: Build (Windows installer)
-        if: runner.os == 'Windows'
+        run: .venv\Scripts\python -m pytest -q
+      - name: Build installer
         run: build_installer.bat /nopause
-
-      - name: Build (macOS DMG)
-        if: runner.os == 'macOS'
-        run: |
-          chmod +x build_macos.sh
-          ./build_macos.sh --no-pause
-
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
-          name: OfflinePDF-Studio-${{ runner.os }}
+          name: OfflinePDF-Studio-Windows
           path: release/*
-          if-no-files-found: error
+
+  build-macos:
+    name: Build macOS DMG
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Create venv
+        run: python3 -m venv .venv
+      - name: Install dependencies
+        run: |
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install -r requirements.lock
+          .venv/bin/python -m pip install "PyInstaller==6.22.3"
+      - name: Regenerate icons
+        run: .venv/bin/python scripts/make_icon.py
+      - name: Offline check
+        run: .venv/bin/python scripts/check_offline.py
+      - name: Run tests
+        run: .venv/bin/python -m pytest -q
+      - name: Build DMG
+        run: |
+          chmod +x build_macos.sh
+          ./build_macos.sh --no-pause
+      - name: Upload DMG
+        uses: actions/upload-artifact@v4
+        with:
+          name: OfflinePDF-Studio-macOS
+          path: release/*
